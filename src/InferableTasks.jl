@@ -10,18 +10,18 @@ Base.fetch(t::InferableTask{T}) where {T} = fetch(t.task)::T
 Base.wait(t::InferableTask) = wait(t.task)
 
 macro ispawn(ex)
-    inferrable(ex) do ex
+    inferable(ex) do ex
         :($Threads.@spawn $ex)
     end |> esc
 end
 
 macro iasync(ex)
-    inferrable(ex) do ex
+    inferable(ex) do ex
         :($Base.@async $ex)
     end |> esc
 end
 
-function inferrable(spawn_macro, ex)
+function inferable(spawn_macro, ex)
     @gensym f T world
     quote
         local $f, $T, $world
